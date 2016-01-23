@@ -1,0 +1,417 @@
+\documentclass[10pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage {esvect}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\graphicspath{ {images/} }
+\usepackage{hyperref}
+\usepackage{esint}
+\usepackage{bm}
+\usepackage{relsize}
+\usepackage{datetime}
+%\usepackage{draftwatermark}
+%\SetWatermarkText{DRAFT}
+%\SetWatermarkScale{5}
+%\SetWatermarkAngle{0}
+\newcommand{\tab}[1]{\hspace{.03\textwidth}\rlap{#1}}
+
+\renewcommand{\baselinestretch}{1.40} 
+
+
+\pdfinfo{
+  /Title (ECE 134 Midterm 1)
+  /Creator (Matt Daily)
+  /Producer (pdfTeX 1.40.0)
+  /Author (Seamus)
+  /Subject (Example)
+  /Keywords (pdflatex, latex,pdftex,tex)}
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+    { \geometry{top=.1in,left=.1in,right=.1in,bottom=.1in} }
+    {\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+        {\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+    }
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+%My Environments
+\newtheorem{example}[section]{Example}
+% -----------------------------------------------------------------------
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\begin{center}
+     \Large{\underline{ECE 134 Final}} \\
+     \scriptsize{Matthew Daily -- Fall 2015\\Constructed using \LaTeX}\\
+     "Atta-Babe" \\
+     Updated \today,  \currenttime
+\end{center}
+
+\section{\underline{Definitions}}
+
+	Q (Charge) [C]\\
+	$\vec{E}$ (Electric Field) [\(\frac{N}{C}\)] or [\(\frac{V}{m}\)]\\
+	$\vec{D}$ (Electric Flux Density) [\(\frac{C}{m^2}\)] \\ 
+	$\rho_{l,s,v}$ (Charge Density) [\(\frac{C}{m}\)] ($\rho_{l}$) or [\(\frac{C}{m^2}\)] ($\rho_{s}$) or [\(\frac{C}{m^3}\)] ($\rho_{v}$)\\
+	$\Phi$ (Electric Potential) [V] or [\(\frac{J}{C}\)] \\
+	$\vec{J}$ (Current Density) [\(\frac{A}{m^2}\)]\\
+	C (Capacitance) [F]\\
+	$U_E$ (Electric Potential Energy) [J]\\
+	$\vec{B}$ (Magnetic Field) [T] = [\(\frac{N}{m \cdot A}\)] = [\(\frac{kg}{A \cdot s^2}\)] or [G] \\
+	\tab{\textit{$\hookrightarrow$ (1T = $10^4$ G)}}\\
+	$L$ (Inductance) [H] = [$\frac{V \cdot s}{A}$]\\
+	$\Phi_B$ (Magnetic Flux) [Wb]\\
+
+
+
+\subsection{Constants}
+	\(\epsilon_{o}  = 8.85 \times 10^{-12}\)  [\(\frac{F}{m}\)] (Permittivity of Free Space) \\
+	\(\mu_o = 4\pi \times 10^{-7}\) [\(\frac{H}{m}\)] (Permeability of Free Space) \\ 
+	\(\sigma_{SB} = 5.6703 \times 10^{-8}\) [\(\frac{W}{m^{2} K^{4}}\)] (Boltzmann's Constant)\\
+	\(Q_{e^-} = -1.60217662 \times 10^{-19}\) [C] (Elementary Charge)\\
+	\(m_{e^-} = 9.11 \times 10^{-31} [kg]\)  (Mass of an electron)\\
+	\(c = 3 \times 10^8 [\frac{m}{s}]\) (Universal Speed Limit)\\
+	\(\eta_o = \sqrt{\frac{\mu_o}{\epsilon_o}} = 377 = 120\pi [\Omega]\) (Impedance of Free Space)\\
+
+\section{\underline{Vector Calculus}}
+	\subsection{Gradient: $\nabla \Phi$}
+		Cartesian: \(\frac{\partial \Phi}{\partial x}\hat{x} + \frac{\partial \Phi}{\partial y}\hat{y} + \frac{\partial \Phi}{\partial z}\hat{z}\)\\
+		Cylindrical: \(\frac{\partial \Phi}{\partial r}\hat{r} + \frac{1}{r}\frac{\partial \Phi}{\partial \phi}\hat{\phi} + \frac{\partial \Phi}{\partial z}			\hat{z}\) \\
+		Spherical: \(\frac{\partial \Phi}{\partial r}\hat{r} + \frac{1}{r}\frac{\partial \Phi}{\partial \theta}\hat{\theta} + \frac{1}{r\sin(\theta)}			\frac{\partial \Phi}{\partial z}\hat{\phi}\)\\
+
+	\subsection{Divergence: $\nabla \cdot \vec{A}$}
+			Cartesian: \(\frac{\partial A_x}{\partial x} + \frac{\partial A_y}{\partial y} + \frac{\partial A_z}{\partial z}\)\\
+			Cylindrical: \(\frac{1}{r}\frac{\partial \left(rA_r\right)}{\partial r} + \frac{1}{r}\frac{\partial A_{\phi}}{\partial \phi} + \frac{\partial A_z}{\partial 	z}\)\\
+			Spherical: \(\frac{1}{r^2}\frac{\partial \left(r^2A_r\right)}{\partial r} + \frac{1}{r\sin{\theta}}\frac{\partial \left( A_{\theta}					\sin{\theta}\right)}		{\partial \theta} + \frac{1}{r\sin{\theta}}\frac{\partial A_{\phi}}{\partial \phi}\)\\
+
+	\subsection{Curl: $\nabla \times \vec{A}$}
+		Cartesian: \(\hat{x}\left( \frac{\partial A_z}{\partial y} - \frac{\partial A_y}{\partial z} \right) + \hat{y} \left( \frac{\partial A_x}{\partial z} - \frac{\partial A_z}{\partial x} \right) + \hat{z} \left( \frac{\partial A_y}{\partial x} - \frac{\partial A_x}{\partial y} \right)\)\\
+		Cylindrical: \(\hat{r}\left( \frac{1}{r}\frac{\partial A_z}{\partial \phi} - \frac{\partial A_{\phi}}{\partial z} \right) + \hat{\phi} \left( \frac{\partial A_r}{\partial z} - \frac{\partial A_z}{\partial r} \right) + \hat{z}\frac{1}{r}\left( \frac{\partial \left(rA_{\phi}\right)}{\partial r} 		- \frac{\partial A_r}{\partial \phi} \right)\)\\
+		Spherical: \includegraphics[scale=.3]{curl_sphere}
+
+\vfill
+
+\subsection{Laplacian: $\nabla^2\Phi$}
+	Cartesian: \(\frac{\partial^2 \Phi}{\partial x^2} + \frac{\partial^2 \Phi}{\partial y^2} + \frac{\partial^2 \Phi}{\partial z^2}\)\\
+	Cylindrical: \includegraphics[scale=.3]{laplacian_cyl}\\
+	Spherical: \includegraphics[scale=.3]{laplacian_sphere}
+
+\subsection{Integrals}
+	\(\mathlarger{\int_0^c \frac{dx}{a + \frac{b-a}{c} x} = \frac{c \ln(\frac{b}{a})}{b-a}}\)\\
+	\(\mathlarger{\frac{\partial}{\partial b} \frac{1}{\ln{\frac{b}{a}}} = -\frac{1}{b (\ln{b} - \ln{a})^2}}\)
+
+
+\subsection{Stupid Stuff I Sometimes Forget}
+	Surface area of a sphere: \(4\pi r^2\)\\
+	Volume of a sphere: \(\frac{4}{3} \pi r^3\)\\
+	Surface area of a cylinder: \(2\pi r l\)\\
+	E field from a point charge: \(\vec{E} = \frac{q}{4 \pi \epsilon_o r^2} \hat{r}\)\\
+	Potential from a point charge: \(\Phi = \frac{q}{4 \pi \epsilon_o r}\)\\
+
+
+
+\section{\underline{How to Get Basic Stuff}}
+	\subsection{Charge}
+		\(Q = \iiint \rho(x,y,z) dV\)\\
+	\subsection{Electric Field}
+		\(\vec{D} = \epsilon \vec{E}\)\\
+		\underline{Gauss' Law:}\\ 
+		\tab{\(\oiint_S \vec{E}\cdot d\vec{S} = \frac{Q}{\epsilon}\) (Integral Form)}\\
+		\tab{\(\nabla \cdot \vec{E} =  \frac{\rho}{\epsilon}\) (Differential Form)}\\
+		\(\vec{E} = -\nabla \Phi\) \\
+		\(\vec{E}(x,y,z) = \iiint \frac{\rho(x',y',z')}{4\pi\epsilon_o R^{2}} dV\)\\
+		Dielectric Strength: \(\vec{E}_{breakdown}\) $[\frac{V}{m}]$
+	\subsection{Electric Potential}
+		\(\Phi = - \int \vec{E} \cdot d\vec{l}\) \\
+		\(\nabla^{2}\Phi = -\frac{\rho}{\epsilon}\) (Poisson's Equation) \\
+		\tab{General Form: \textit{$\hookrightarrow$ $\nabla \cdot (\epsilon\nabla\Phi) = -\rho$ } (works for non-constant $\epsilon$)}\\
+
+		
+	\subsection{Potential Energy}
+		From a charge distribution:\\
+			 \tab{\(U_E = \frac{1}{2}\iiint \rho (\vec{r}) \Phi (\vec{r}) dV\)} \\ 
+			\tab{\(U_E = \frac{1}{2}\iiint \epsilon | \vec{E}| ^{2} dV\)} \\
+		Energy of a sphere of charge:\\
+			\tab{\(U_E = \frac{4\pi\rho^2 b^5}{15\epsilon_o}\)}\\
+			 
+	\subsection{Power}
+		\(P_E = \iiint \vec{J} \cdot \vec{E}dV = VI = \frac{V^2}{R} = I^2R\)\\ 
+	\subsection{Electric Force}
+		\(\vec{F_E} = q\vec{E}\)\\
+		In terms of energy: \(\vec{F} = \pm \frac{\partial}{\partial l}(U_E(l))\hat{l}\)		
+
+
+
+
+
+
+\section{\underline{Capacitance}}
+	\(C = \frac{Q}{V}\) \\ 
+	\(U_c = \frac{1}{2} CV^2 = \frac{1}{2}\frac{Q^2}{C}\)\\
+	\(C_{coax.} = \frac{2\pi\epsilon L}{\ln{\frac{b}{a}}}\)
+	\subsection{Parallel Plate (Special Case)}
+		E = \(\frac{\rho_s}{\epsilon} = \frac{V}{d}\) \\
+		C = \(\frac{\epsilon A}{d}\) where \(\epsilon = \epsilon_r \epsilon_o\) \\
+	
+
+\section{\underline{Boundary Conditions}}
+\subsection{Surface of a Conductor}
+	\(\hat{n} \cdot \vec{E}_{surface} = \frac{\rho_s}{\epsilon}\)\\
+	\(\hat{n} \times \vec{E}_{surface} = 0\) \\
+	\textbf{\textit{Expressed in terms of potential...}}\\
+	\(-\frac{\partial\Phi}{\partial\hat{n}} = \frac{\rho_s}{\epsilon}\)\\
+	$\Phi$ = Constant\\
+	
+
+\subsection{Dielectric Boundary}
+	\(\hat{n} \cdot \vec{E}_{1}\epsilon_1 - \hat{n} \cdot \vec{E}_{2}\epsilon_2 = \rho_s\) \\
+	\(\hat{n} \times \vec{E}_{1} = \hat{n} \times \vec{E}_{2}\)\\
+	\textbf{\textit{Expressed in terms of potential...}}\\
+	\(\epsilon_1 \frac{\partial \Phi_1}{\partial n} - \epsilon_2 \frac{\partial \Phi_2}{\partial n} = \rho_s\)\\
+	\(\hat{n} \times \nabla \Phi_1 \big|_{surface} = \hat{n} \times \nabla \Phi_2 \big|_{surface}\)\\
+
+
+\section{\underline{Conductors, Current, and Resistance}}
+	Current: \(I = \iint \vec{J} \cdot d\vec{S}\)\\ 
+	Ohm's Law: $\vec{J} = \sigma\vec{E}$ \\ 
+	For Moving Charges: \(\vec{J} = \rho \vec{v}\)\\
+		\tab{\textit{$\hookrightarrow$ $\rho$ is charge density}} \\
+
+			
+	Conductivity : $\sigma$ [$\frac{S}{m}$]\\
+	Resistivity : $\rho$ [$\Omega$ $\cdot$ m] \\
+	
+	Resistance: \(R = \frac{1}{\sigma}\frac{l}{A} = \rho\frac{l}{A}\)\\
+		\tab{\textit{$\hookrightarrow$ (l is in the direction of current flow)}} \\
+		\tab{\textit{$\hookrightarrow$ (A is the cross-section which current is flowing through)}} \\
+	Drift Velocity: \(\vec{v}_{drift} = \mu \vec{E}\)\\
+			\tab{\textit{$\hookrightarrow$ ($\mu$ is the electron mobility of a material) }} \\
+
+
+\subsection{Sheet Resistors}
+		\tab{\textit{$\hookrightarrow$ Typically have a length (l), width (w) and thickness (t) }} \\ 
+	Resistance: \(R = \frac{1}{\sigma}\frac{l}{A} = \frac{1}{\sigma}\frac{l}{w\cdot t} = r_{sh}\frac{l}{w}\) \\
+		\tab{\textit{$\hookrightarrow r_{sh} = \frac{1}{\sigma t}$ }} \\
+		Series of sheet resistors: R = \(r_{sh}(\frac{l}{w} - 0.44N_{corners})\)\\
+		
+		
+\section{\underline{Heat Transfer}}
+	Heat Capacity: $C_p$ [$\frac{J}{K}$] \\
+	Specific Heat Capacity: $C_{sp}$ =  $\frac{C_p}{mass}$ [$\frac{J}{gK}$] \\ 
+	\(\Delta U_{heat} = C_p \Delta T\) \\
+	Resistivity w/ Temperature: \(\rho (T) = \rho_o [1 + \alpha_{TCR} (T-T_o)]\)\\
+	\tab{\textit{$\hookrightarrow$ $\rho_o$ = resistivity at room temperature}} \\ 
+	\tab{\textit{$\hookrightarrow$ $\alpha_{TCR}$ = temperature coefficient of resistance}} \\ 
+	\subsection{Methods of Heat Transfer}
+	Energy Balance: \(P_{in} = P_{stored} + P_{cond} + P_{conv} + P_{rad}\)\\
+	\(P_{stored} = C_h\frac{dT}{dt}\) (Zero for steady state!!!)\\
+	Conduction: \(P_{cond} = \frac{T_1 - T_o}{\theta_{th}}\)\\
+	Convection: \(P_{conv} = hA_s(T-T_o)\) \\
+	\tab{\textit{$\hookrightarrow$ $h$ = convection coefficient}} \\ 
+	\tab{\textit{$\hookrightarrow$ $A_{s}$ = surface area}} \\ 
+	\tab{Steady State: \(\Delta T_{\infty} = \frac{I^2R}{hA_s}\)}\\
+	Radiation: \(P_{rad} = e\sigma_{SB}A_s(T^4-T_o^4)\) \\
+		\tab{\textit{$\hookrightarrow$ $e$ = emissivity ($ 0<e<1$)}} \\ 
+		
+\section{\underline{Elementary Magnetostatics}}
+	\underline{Amp\` ere's Law:}\\ 
+	\tab{\(\int\vec{B}\cdot d \vec{S} = \mu_o I_{inside} \) (Integral form)}\\
+	\tab{\(\nabla \times \vec{B} = \mu_o \vec{J}\) (Differential Form)}\\
+		Magnetic Field Strength (H): \(\vec{B} = \mu\vec{H}\)\\
+	Force on a wire: \(\vec{F_B} = I \vec{l} \times \vec{B}\)\\
+	Lorentz's Force Law: \(\vec{F} = q (\vec{E} + \vec{v} \times \vec{B})\)\\
+			\tab{\textit{$\hookrightarrow$ $\vec{F}_B =  q\vec{v} \times \vec{B}$}} \\ 
+	
+
+	
+\subsection{Magnetic Fields from Different Objects}
+	Field from a wire: \(B = \frac{\mu_o I}{2 \pi r}\)\\
+	Field inside a solenoid: \(B = \mu n I\)\\
+		\tab{\textit{$\hookrightarrow$ $n$ = turn density = $\frac{N}{l}$}} \\ 
+	Field inside a toroid: \(B =\frac{\mu NI}{2\pi r}\)\\ 
+	Field from an infinite current sheet: \(B = \frac{\mu_o J}{2}\)\\
+
+
+
+\subsection{Vector Potential $(\vec{A})$}
+	\(\nabla^{2}\vec{A} = -\mu_{o}\vec{J}\)\\
+	\(\vec{A}(\vec{r}) = \frac{\mu_o}{4\pi}\mathlarger{\iiint}\frac{\vec{J}(\vec{r})}{R} dV'\)\\
+			\tab{\textit{$\hookrightarrow$ $R$ = $\vec{r} - \vec{r}$ $'$}} \\ 
+			
+			
+\section{\underline{Faraday's Law and Induction}}
+	Magnetic Flux: \(\Phi_B = \iint \vec{B} \cdot d\vec{S}\)\\
+	Faraday's Law: \(V_{emf} = -\frac{d\Phi_B}{dt}\)\\
+		\tab{\textit{$\hookrightarrow$ For EMF induced in a coil: $V_{emf} = -N\frac{d\Phi_B}{dt}$}}\\
+		
+
+\vfill
+	
+	
+\subsection{{Inductance}}
+	In general... \\
+		\tab{\(L = \frac{N\Phi_B}{I}\) [H]}\\
+						\tab{\tab{\textit{$\hookrightarrow$ Sanity Check: L should have a factor of $N^2$}}} \\
+		\tab{Magnetic Energy from Inductance: \(U_B = \frac{1}{2} LI^2\)} \\
+		 \tab{Magnetic Force: $F_B = \pm \frac{\partial}{\partial l} (U_B(l)) \hat{l}$}}} \\
+
+	For a 2-circuit system (Mutual Inductance): \\
+		\tab{Flux from Ckt 1 in Ckt  2: \(\Phi_{21} = \iint  \vec{B}_1 \cdot d\vec{S}_2\)} \\
+		\tab{Induced voltage in Ckt 2: \(V_{emf} = \frac{-d\Phi_{21}}{dt} = L_{21} \frac{dI_1}{dt}\)} \\
+		\tab{Mutual Inductance: \(L_{21} = \frac{\Phi_{21}}{I_1}\)} \\
+	Self-Inductance: \\
+		\tab{Flux from Ckt 1 in Ckt 1: \(\Phi_{11} = \iint \vec{B}_1 \cdot d\vec{S}_1\)} \\ 
+		\tab{Self-Inductance: \(L_{11} = \frac{\Phi_{11}}{I_1}\)} \\
+	In general...\\
+		\tab{\(L_{21} = L_{12}, $ but $ L_{11} \neq L_{22} \)}\\
+		\tab{\textit{We must include both mutual and self-inductance terms!}} \\
+		\tab{\(V_1 = L_{11}\frac{dI_1}{dt} + L_{12}\frac{dI_2}{dt}\)}\\
+		\tab{\(V_2 = L_{22}\frac{dI_2}{dt} + L_{21}\frac{dI_1}{dt}\)}\\
+	
+
+\subsection{Magnetic Flux Circuits}
+	\textit{Analogous to Resistive Circuits!} \\
+	For an N-turn Coil On a High-$\mu$ Core...\\
+		\tab{\(V = NI\)}\\
+		\tab{\(R = \mathcal{R} = \mu \frac{l}{A}\) (Reluctance)} \\
+		\tab{\tab{\textit{$\hookrightarrow$ (l is in the direction of flux flow)}}} \\
+		\tab{\tab{\textit{$\hookrightarrow$ (A is the cross-section which flux is flowing through)}}} \\
+		\tab{\(I = \Phi_B = \frac{NI}{\mathcal{R}}\)}\\
+
+\subsection{Ideal Transformers (Perfect Flux Sharing)}
+	Voltage and Turns: \(\frac{V_p}{V_s} = \frac{N_p}{N_s}\)\\
+		{\tab{\textit{$\hookrightarrow$ (p = primary, s = secondary)}} \\
+	Current and Turns: \(N_p I_p = N_s I_s\)\\
+			
+\section{\underline{Phasors}}
+	\(f(t) = A\cos{(\omega t + \phi)} \Longrightarrow F = Ae^{j\phi}\)\\
+	\(f(t) = A\sin{(\omega t + \phi)} \Longrightarrow F = -jAe^{j\phi}\)\\
+	Euler's Identity: \(e^{j\theta} = \cos{\theta} + j\sin{\theta}\) \\
+	\(\Re{[e^{jx}]} = \cos{x}\) \\ 
+	\(\Im{[e^{jx}]} = \sin{x}\) \\
+
+\vfill
+
+\section{\underline{Plane Waves}}
+	Source-Free Wave Equations: \underline{\(\nabla^2 \vec{E} + k_{o}^2\vec{E} = 0\)} \& \underline{\(\nabla^2 \vec{H} + k_{o}^2\vec{H} = 0\)} \\
+	\tab{\underline{Solutions are linear combinations of:}} \\
+	\tab{\(\vec{E} / \vec{H} = \vec{E}_{o}^+/\vec{H}_{o}^{+}e^{-j\vec{k} \cdot \vec{r}}\) (Forward Propagating Wave)} \\
+	\tab{\(\vec{E} / \vec{H} = \vec{E}_{o}^{-}/\vec{H}_{o}^{-}e^{+j\vec{k} \cdot \vec{r}}\) (Reverse Propagating Wave)} \\
+	{\tab{\textit{$\hookrightarrow$ $\vec{k}$ points in direction of wave propagation ($k_x\hat{x}+k_y\hat{y}+k_z\hat{z}$)}}\\
+	{\tab{\textit{$\hookrightarrow$ $\vec{r}$ is a generic position vector ($x\hat{x} + y\hat{y} + z\hat{z}$)}}\\
+		{\tab{\textit{$\hookrightarrow$ \underline{e.g.} for a wave moving in the $+\hat{z}$ direction, $\vec{k} \cdot \vec{r} = kz$}}\\
+	
+	General form of an EM Wave: \(H_o/E_o\cos/\sin{(\omega t \pm k/\beta z + \phi)}\)\\
+
+		
+	\subsection{Typical Parameters of Plane Waves}
+	Angular Frequency: \(\omega = 2\pi f\) [$\frac{rad}{s}$]\\
+	Wavenumber: \(k/\beta = \omega\sqrt{\mu\epsilon} = \frac{\omega}{v} = \frac{2\pi}{\lambda}\) \\
+	\tab{$\hookrightarrow$ Free Space Wavenumber: $k_o = \omega\sqrt{\mu_o\epsilon_o} = \frac{\omega}{c} = \frac{2\pi}{\lambda_o}$} \\
+	Impedance: \(\eta = \sqrt{\frac{\mu_o}{\epsilon_o \epsilon_r}} = \eta_o \frac{1}{\sqrt{\epsilon_r}}\)\\
+		\tab{$\hookrightarrow$ Impedance of Free Space = $\eta_o = \sqrt{\frac{\mu_o}{\epsilon_o}} = 377 \Omega = 120\pi$} \\
+	To go from H to E: \(\vec{E} = -\eta (\hat{a}_n \times \vec{H})\) \\
+	To go from E to H: \(\vec{H} = \frac{1}{\eta}(\hat{a}_n \times \vec{E})\)\\
+			\tab{\textit{$\hookrightarrow$ $\hat{a}_n$ is a unit vector in the direction of propagation}} \\
+			\tab{\textit{$\hookrightarrow$ $\vec{E}$ and $\vec{H}$ point in the direction of polarization}} \\
+
+\subsection{Propagation Through Lossy Media}
+	General form for an attenuated wave: \(E_x = E_oe^{-\alpha z}e^{-j\beta z}\)\\
+		\tab{\textit{$\hookrightarrow$ wave propagating in $+\hat{z}$ direction}} \\
+		\tab{\textit{$\hookrightarrow$ wave polarized in $\hat{x}$ direction}} \\
+
+
+	Attenuation factor: \(e^{-\alpha z}\)\\
+		\tab{\textit{$\hookrightarrow$ how much the amplitude has shrunk through distance z}} \\ 
+		
+	Phase Constant : $\beta$ (similar to $k$) \\
+		\tab{\textit{$\hookrightarrow$ tells us how much phase changes as wave propagates}} \\ 
+		
+
+
+		
+
+		
+
+	
+
+\subsubsection{Low-Loss Medium (Dielectric): \underline{$\tan{\delta}$ = $\frac{\sigma}{\omega\epsilon} << 1$}}
+	Attenuation Constant: \(\alpha = \frac{\sigma}{2} \sqrt{\frac{\mu}{\epsilon}}\) [$\frac{Np}{m}$] \\
+			\tab{\textit{$\hookrightarrow$ $1 \frac{Np}{m} = 8.686 \frac{dB}{m}$}} \\
+	Phase Constant: \(\beta = \omega\sqrt{\mu\epsilon}\)\\
+	Phase Velocity: \(v_p = \frac{\omega}{\beta}\) \\
+	Intrinsic Impedance: \(\eta_c = \sqrt{\frac{\mu}{\epsilon}} (1 + j \frac{\tan{\delta}}{2})\) \\
+	Skin Depth: \(\delta = \frac{1}{\alpha}\) [m]\\
+	
+	
+\subsubsection{Lossy Medium (Good Conductor): \underline {$\tan{\delta}$ =  $\frac{\sigma}{\omega\epsilon} >> 1$}}
+	Attenuation and Phase Constant: \(\alpha = \beta = \sqrt{\pi f \mu \sigma}\)\\
+	Phase Velocity: \(v_p = \frac{\omega}{\beta} = \sqrt{\frac{2\omega}{\mu\sigma}}\)\\
+	Wavelength: \(\lambda = \frac{2\pi}{\beta} = \frac{v_p}{f} = 2 \sqrt{\frac{\pi}{f\mu\sigma}}\) \\
+	Intrinsic Impedance: \(\eta_c = (1+j) \frac{\alpha}{\sigma}\)\\
+	Skin Depth: \(\delta = \frac{1}{\alpha} = \frac{1}{\beta} = \frac{\lambda}{2\pi}\) [m] \\
+	
+
+	
+\newpage
+
+
+
+
+
+
+
+
+% You can even have references
+\rule{0.3\linewidth}{0.25pt}
+\scriptsize
+%\bibliographystyle{abstract}
+%\bibliography{refFile}
+\end{multicols}
+\end{document}
